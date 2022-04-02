@@ -2,10 +2,11 @@ import pygame as pg
 
 
 class Block(pg.sprite.Sprite):
-    def __init__(self, pos, url):
+    def __init__(self, pos, url, type):
         super().__init__()
         self.image = self.get_image(url)
         self.rect = self.image.get_rect(topleft=pos)
+        self.type = type
 
     def get_image(self, url):
         return pg.transform.rotozoom(

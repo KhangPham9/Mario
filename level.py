@@ -34,7 +34,7 @@ class Level:
                 y = row_index * self.settings.tile_size
                 if cell in Level.block_dic:
                     # print(f'{row_index}, {col_index}: {cell}')
-                    block = Block((x, y), Level.block_dic[cell])
+                    block = Block((x, y), Level.block_dic[cell], type=cell)
                     self.blocks.add(block)
                 elif cell in Level.mob_dic:
                     mob = Level.mob_dic[cell](game=self.game, pos=(x, y))
@@ -43,9 +43,11 @@ class Level:
     def scroll(self):
         self.blocks.update(-1 * self.settings.mario_speed_factor)
         self.bg.update()
+        self.settings.goomba_speed_factor = 16
 
     def update(self):
         self.mario.check_input()
+        self.mobs.update()
         self.vertical_collision()
         self.horizontal_collision()
         if self.mario.check_scroll():
@@ -53,7 +55,7 @@ class Level:
             self.scroll()
         else:
             self.mario.update()
-        self.mobs.update()
+            self.settings.goomba_speed_factor = 4
 
     def draw(self):
         self.mario.draw()
@@ -77,6 +79,8 @@ class Level:
             if block.rect.colliderect(self.mario.rect):
                 if self.mario.vector.y < 0:
                     self.mario.rect.top = block.rect.bottom
+                    if block.type == 'B':
+                        block.kill()
                 elif self.mario.vector.y > 0:
                     self.mario.rect.bottom = block.rect.top
                     self.mario.vector.y = 0
@@ -89,6 +93,11 @@ class Level:
                     elif mob.vector.y > 0:
                         mob.rect.bottom = blocks.rect.top
                         mob.vector.y = 0
+
+        for mob in self.mobs.sprites():
+            if mob.rect.colliderect(self.mario.rect):
+                if self.mario.vector.y > 0:
+                    mob.kill()
 
     def apply_gravity(self, sprite):
         sprite.vector.y += self.settings.gravity
