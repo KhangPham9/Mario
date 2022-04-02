@@ -26,18 +26,19 @@ class Settings:
 
         # sprite settings
         self.goomba_rect = pg.Rect(0, 0, 16, 16)
+        self.goomba_speed_factor = 4
 
-        self.mario_rect = pg.Rect(58, 0, 16, 18)
+        self.mario_rect = pg.Rect(57, 0, 16, 18)
 
         # mario settings
-        self.mario_speed_factor = 8
+        self.mario_speed_factor = 16
 
         # level settings
         self.level_rect = pg.Rect(0, 0, 1200, 800)
 
     def s_mario_images(self):
         return [pg.transform.rotozoom(self.get_sheet_image(self.sprite_sheet,
-                                                           pg.Rect(58, x, 16,
+                                                           pg.Rect(57, x, 16,
                                                                    16)), 0, 2)
                 for x in range(0, 16 * 15 + 1, 20)]
 

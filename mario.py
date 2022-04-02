@@ -1,16 +1,20 @@
 import pygame as pg
 import math
 from vector import Vector
-from sprites import Sprites
 from timer import Timer
 
 
-class Mario(Sprites):
+class Mario(pg.sprite.Sprite):
 
     def __init__(self, game, pos):
-        super().__init__(game)
-        self.image = pg.transform.rotozoom(self.game.settings.get_sheet_image(
-            self.game.settings.sprite_sheet, self.game.settings.mario_rect), 0, 2)
+        super().__init__()
+        self.game = game
+        self.screen = game.screen
+        self.settings = game.settings
+        self.screen_rect = self.screen.get_rect()
+
+        self.image = pg.transform.rotozoom(self.settings.get_sheet_image(
+            self.settings.sprite_sheet, self.settings.mario_rect), 0, 2)
 
         self.s_mario_images = game.settings.s_mario_images()
 
@@ -29,6 +33,7 @@ class Mario(Sprites):
         self.last_key_pressed = None
 
     def update(self):
+        self.clamp_left()
         self.rect.x += self.vector.x
         # self.clamp()
         # self.rect.centerx, self.rect.centery = self.center.x, self.center.y
@@ -37,14 +42,6 @@ class Mario(Sprites):
         if self.last_key_pressed != None:
             self.image = self.timer.image()
         self.screen.blit(self.image, self.rect)
-
-    def clamp(self):
-        rw, rh = self.rect.width, self.rect.height
-        srw, srb = self.screen_rect.width - 50, self.screen_rect.bottom
-        x, y = self.center.x, self.center.y
-
-        self.center.x = min(max(x, rw / 2), srw - rw / 2)
-        self.center.y = min(max(y, rh / 2), srb - rh / 2)
 
     def check_scroll(self):
         if self.rect.x + self.rect.width >= self.screen_rect.width - 50 and self.last_key_pressed == 'D':
@@ -67,3 +64,8 @@ class Mario(Sprites):
             self.vector.x = 0
             self.last_key_pressed = None
             self.image = self.s_mario_images[0]
+
+    def clamp_left(self):
+        if self.rect.x <= 0 and self.last_key_pressed == 'A':
+            self.rect.x = 0
+            self.vector.x = 0
