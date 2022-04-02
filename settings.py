@@ -2,10 +2,19 @@ import pygame as pg
 
 
 class Settings:
+    file1 = open('images/level_loc.txt', 'r')
+    level = file1.readlines()
+
+    level_map = []
+    for line in level:
+        level_map.append(line)
+
     def __init__(self):
         # screen settings
+        self.level_map = Settings.level_map
+        self.tile_size = 32
         self.screen_width = 1200
-        self.screen_height = 800
+        self.screen_height = (len(self.level_map) - 15) * self.tile_size
         self.bg_color = (60, 60, 60)
 
         # font settings
@@ -19,10 +28,11 @@ class Settings:
         self.mario_rect = pg.Rect(57, 0, 16, 16)
 
         # mario settings
-        self.mario_speed_factor = 0.5
+        self.mario_speed_factor = 1
 
         # level settings
         self.level_rect = pg.Rect(0, 0, 1200, 800)
+
 
     def get_sheet_image(self, spritesheet, rectangle, color_key=None):
         """gets an image from a sprite sheet expects a pygame rectangle
