@@ -6,6 +6,7 @@ from background import Background
 from block import Block
 from level import Level
 
+
 class Game:
     level1 = pg.image.load('images/level1.png')
 
@@ -19,19 +20,18 @@ class Game:
         pg.display.set_caption("Super Mario")
 
         self.bg = Background(game=self)
-        self.mario = Mario(game=self)
         self.level = Level(self.settings.level_map, game=self)
 
     def restart(self):
         pass
 
     def update(self):
-        self.mario.update()
+        self.check_events()
+        self.level.update()
 
     def draw(self):
         self.bg.draw()
         self.level.draw()
-        self.mario.draw()
         pg.display.flip()
 
     def play(self):
@@ -39,7 +39,16 @@ class Game:
         while not self.finished:
             self.update()
             self.draw()
-            self.clock.tick(120)
+            self.clock.tick(60)
+
+    def check_events(self):
+        for e in pg.event.get():
+            if e.type == pg.QUIT:
+                self.finished = True
+            elif e.type == pg.KEYDOWN:
+                if e.key == pg.K_q:
+                    self.finished = True
+
 
 def main():
     g = Game()

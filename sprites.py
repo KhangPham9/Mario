@@ -4,13 +4,11 @@ from pygame.sprite import Sprite, Group
 
 
 class Sprites(Sprite):
-
     def __init__(self, game):
         super().__init__()
         self.game = game
         self.screen = game.screen
-        self.spritesheet = pg.image.load(
-            'images/allsprites.png').convert_alpha()
+
         self.screen_rect = self.screen.get_rect()
         self.vector = Vector()
 

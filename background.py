@@ -9,7 +9,7 @@ class Background:
         self.settings = game.settings
         self.rect = self.settings.level_rect
         self.bg = pg.transform.rotozoom(self.settings.get_sheet_image(
-            pg.image.load('images/level_bg.png'), self.rect), 0, 2)
+            pg.image.load('images/level_bg.png'), self.rect), 0, 2.3)
 
     def draw(self):
         self.screen.blit(self.bg, (0, 0))
