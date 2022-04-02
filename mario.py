@@ -34,6 +34,7 @@ class Mario(pg.sprite.Sprite):
 
     def update(self):
         self.clamp_left()
+        self.apply_gravity()
         self.rect.x += self.vector.x
         # self.clamp()
         # self.rect.centerx, self.rect.centery = self.center.x, self.center.y
@@ -64,8 +65,17 @@ class Mario(pg.sprite.Sprite):
             self.vector.x = 0
             self.last_key_pressed = None
             self.image = self.s_mario_images[0]
+        if keys[pg.K_w]:
+            self.jump()
 
     def clamp_left(self):
         if self.rect.x <= 0 and self.last_key_pressed == 'A':
             self.rect.x = 0
             self.vector.x = 0
+
+    def jump(self):
+        self.vector.y = self.settings.mario_jump
+
+    def apply_gravity(self):
+        self.vector.y += self.settings.gravity
+        self.rect.y += self.vector.y
