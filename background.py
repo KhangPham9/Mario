@@ -1,5 +1,4 @@
 import pygame as pg
-from vector import Vector
 
 
 class Background:

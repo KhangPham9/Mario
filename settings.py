@@ -20,18 +20,20 @@ class Settings:
         self.sprite_sheet = pg.image.load('images/allsprites.png')
 
         # font settings
-        self.headingFont = pg.font.SysFont(None, 140)
-        self.subheadingFont = pg.font.SysFont(None, 122)
-        self.font = pg.font.SysFont(None, 48)
+        self.headingFont = pg.font.SysFont('', 140)
+        self.subheadingFont = pg.font.SysFont('', 122)
+        self.font = pg.font.SysFont('', 48)
 
         # sprite settings
         self.goomba_rect = pg.Rect(0, 0, 16, 16)
         self.goomba_speed_factor = 4
+        self.goomba_points = 100
 
         # mario settings
-        self.mario_rect = pg.Rect(57, 0, 16, 18)
-        self.mario_speed_factor = 8
-        self.mario_jump = -8
+        self.mario_rect = pg.Rect(57, 0, 16, 16)
+        self.mario_speed_factor = 12
+        self.mario_jump = -12
+        self.mario_lives = 3
 
         # level settings
         self.level_rect = pg.Rect(0, 0, 1200, 800)
@@ -42,11 +44,27 @@ class Settings:
         return [pg.transform.rotozoom(self.get_sheet_image(self.sprite_sheet,
                                                            pg.Rect(57, x, 16,
                                                                    16)), 0, 2)
-                for x in range(0, 16 * 15 + 1, 20)]
+                for x in range(0, 16 * 15, 20)]
 
-    def get_sheet_image(self, spritesheet, rectangle, color_key=None):
+    def b_mario_images(self):
+        return [pg.transform.rotozoom(self.get_sheet_image(self.sprite_sheet,
+                                                           pg.Rect(120, x, 16,
+                                                                   32)), 0, 2)
+                for x in range(0, 40 * 11, 40)]
+
+    def goomba_images(self):
+        return [pg.transform.rotozoom(self.get_sheet_image(self.sprite_sheet,
+                                                           pg.Rect(0, x, 16, 16)), 0, 2)
+                for x in range(0, 22 * 3, 22)]
+
+    def get_flag(self):
+        return pg.transform.rotozoom(self.get_sheet_image(self.sprite_sheet,
+                                                           pg.Rect(318, 0, 16, 128)), 0, 2)
+
+    @staticmethod
+    def get_sheet_image(spritesheet, rectangle, color_key=None):
         rect = rectangle
         sheet = spritesheet
-        image = pg.Surface(rect.size).convert()
+        image = pg.Surface(rect.size).convert_alpha()
         image.blit(sheet, (0, 0), rect)
         return image

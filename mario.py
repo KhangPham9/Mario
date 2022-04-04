@@ -1,6 +1,4 @@
 import pygame as pg
-import math
-from vector import Vector
 from timer import Timer
 
 
@@ -18,13 +16,29 @@ class Mario(pg.sprite.Sprite):
 
         self.s_mario_images = game.settings.s_mario_images()
 
-        self.r_move_image = [self.s_mario_images[1],
+        self.b_mario_images = game.settings.b_mario_images()
+
+        self.s_r_move_image = [self.s_mario_images[1],
                              self.s_mario_images[2], self.s_mario_images[3]]
-        self.l_move_image = [self.s_mario_images[7],
+        self.s_l_move_image = [self.s_mario_images[7],
                              self.s_mario_images[8], self.s_mario_images[9]]
+
+        self.b_r_move_image = [self.b_mario_images[1], self.b_mario_images[2], self.b_mario_images[3],
+                               self.b_mario_images[5]]
+        self.b_l_move_image = [self.b_mario_images[6], self.b_mario_images[7], self.b_mario_images[8],
+                               self.b_mario_images[10]]
+
+        self.s_image_dic = {
+            'D': self.s_r_move_image,
+            'A': self.s_l_move_image
+        }
+        self.b_image_dic = {
+            'D': self.b_r_move_image,
+            'A': self.b_l_move_image
+        }
         self.image_dic = {
-            'D': self.r_move_image,
-            'A': self.l_move_image
+            's': self.s_image_dic,
+            'b': self.b_image_dic
         }
 
         self.rect = self.image.get_rect(topleft=pos)
@@ -32,6 +46,7 @@ class Mario(pg.sprite.Sprite):
         self.timer = Timer(image_list=self.s_mario_images)
         self.last_key_pressed = None
         self.jumping = False
+        self.size = 's'
 
     def update(self):
         self.clamp_left()
@@ -40,12 +55,15 @@ class Mario(pg.sprite.Sprite):
         # self.rect.centerx, self.rect.centery = self.center.x, self.center.y
 
     def draw(self):
-        if self.last_key_pressed != None:
+        if self.last_key_pressed:
             self.image = self.timer.image()
+        x = self.rect.x
+        y = self.rect.y
+        self.rect = self.image.get_rect(topleft=(x, y))
         self.screen.blit(self.image, self.rect)
 
     def check_scroll(self):
-        if self.rect.x + self.rect.width >= self.screen_rect.width - 50 and self.last_key_pressed == 'D':
+        if self.rect.x + self.rect.width >= self.screen_rect.width - 200 and self.last_key_pressed == 'D':
             return True
 
     def check_input(self):
@@ -53,20 +71,22 @@ class Mario(pg.sprite.Sprite):
 
         if keys[pg.K_d]:
             if self.last_key_pressed != 'D':
-                self.timer = Timer(image_list=self.image_dic['D'])
+                self.timer = Timer(image_list=self.image_dic[self.size]['D'])
             self.vector.x = 1 * self.game.settings.mario_speed_factor
             self.last_key_pressed = 'D'
         elif keys[pg.K_a]:
             if self.last_key_pressed != 'A':
-                self.timer = Timer(image_list=self.image_dic['A'])
+                self.timer = Timer(image_list=self.image_dic[self.size]['A'])
             self.vector.x = -1 * self.game.settings.mario_speed_factor
             self.last_key_pressed = 'A'
         else:
             self.vector.x = 0
             self.last_key_pressed = None
-            self.image = self.s_mario_images[0]
+            if self.size == 's':
+                self.image = self.s_mario_images[0]
+            else:
+                self.image = self.b_mario_images[0]
         if keys[pg.K_w] and not self.is_jumping():
-            print(not self.is_jumping())
             self.jump()
 
     def clamp_left(self):
@@ -75,10 +95,17 @@ class Mario(pg.sprite.Sprite):
             self.vector.x = 0
 
     def jump(self):
-        self.vector.y = self.settings.mario_jump
+        if not self.jumping:
+            self.vector.y = self.settings.mario_jump
 
     def is_jumping(self):
         if self.vector.y == 0:
             self.jumping = False
         else:
             self.jumping = True
+
+    def change_size(self):
+        if self.size == 's':
+            self.size = 'b'
+        else:
+            self.size = 's'

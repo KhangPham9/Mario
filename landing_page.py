@@ -20,7 +20,8 @@ class LandingPage:
         self.play_button = Button(self.screen, "PLAY GAME", ul=(500, 400))
         self.hover = False
 
-    def render_font(self, font, msg, text_color, bg_color, antialis=True):
+    @staticmethod
+    def render_font(font, msg, text_color, bg_color, antialis=True):
         text = font.render(msg, antialis, text_color, bg_color)
         return text
 
@@ -47,7 +48,6 @@ class LandingPage:
         for e in pg.event.get():
             if e.type == pg.QUIT:
                 sys.exit("exiting mario")
-                sys.exit()
             elif e.type == pg.MOUSEBUTTONDOWN:
                 if self.mouse_on_button:
                     self.finished = True

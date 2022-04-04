@@ -4,7 +4,7 @@
 
 
 
-                                                                                 G G
+                                                                                 G G                                                                                                                    F
                        ?                                                         BBBBBBBB   BBB?             M            BBB    B??B                                                         RR
                                                                                                                                                                                              RRR
                                                                                                                                                                                             RRRR
@@ -12,9 +12,9 @@
                  ?   BMB?B                                                    BMB              L    BS    ?  ?  ?      B          BB      R  R          RR  R             BB?B            RRRRRR
                                                                                                                                          RR  RR        RRR  RR                           RRRRRRR
                                                                                                            K                            RRR  RRR      RRRR  RRR                         RRRRRRRR
-                       G                 G           G G                                         G G              G  G       G G G G   RRRR  RRRR    RRRRR  RRRR                G G    RRRRRRRRR        R
+           B           G                 G           G G                                         G G              G  G       G G G G   RRRR  RRRR    RRRRR  RRRR                G G    RRRRRRRRR        R
 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  XXXXXXXXXXXXXXX   XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  XXXXXXXXXXXXXXX   XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
 
 
 
