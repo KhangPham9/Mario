@@ -59,7 +59,7 @@ class Settings:
 
     def get_flag(self):
         return pg.transform.rotozoom(self.get_sheet_image(self.sprite_sheet,
-                                                           pg.Rect(318, 0, 16, 128)), 0, 2)
+                                                          pg.Rect(318, 0, 16, 128)), 0, 2)
 
     @staticmethod
     def get_sheet_image(spritesheet, rectangle, color_key=None):

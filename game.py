@@ -1,7 +1,6 @@
 import pygame as pg
 from settings import Settings
 from landing_page import LandingPage
-from background import Background
 from level import Level
 from scoreboard import Scoreboard
 from stats import Stats
@@ -22,7 +21,6 @@ class Game:
         self.clock = pg.time.Clock()
         pg.display.set_caption("Super Mario")
 
-        self.bg = Background(game=self)
         self.level = Level(self.settings.level_map, game=self)
         self.finished = False
 
@@ -35,7 +33,6 @@ class Game:
         self.sb.update()
 
     def draw(self):
-        self.bg.draw()
         self.level.draw()
         self.sb.draw()
         pg.display.flip()

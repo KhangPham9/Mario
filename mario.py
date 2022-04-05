@@ -11,6 +11,8 @@ class Mario(pg.sprite.Sprite):
         self.settings = game.settings
         self.screen_rect = self.screen.get_rect()
 
+        self.original_pos = pos
+
         self.image = pg.transform.rotozoom(self.settings.get_sheet_image(
             self.settings.sprite_sheet, self.settings.mario_rect), 0, 2)
 
@@ -19,9 +21,9 @@ class Mario(pg.sprite.Sprite):
         self.b_mario_images = game.settings.b_mario_images()
 
         self.s_r_move_image = [self.s_mario_images[1],
-                             self.s_mario_images[2], self.s_mario_images[3]]
+                               self.s_mario_images[2], self.s_mario_images[3]]
         self.s_l_move_image = [self.s_mario_images[7],
-                             self.s_mario_images[8], self.s_mario_images[9]]
+                               self.s_mario_images[8], self.s_mario_images[9]]
 
         self.b_r_move_image = [self.b_mario_images[1], self.b_mario_images[2], self.b_mario_images[3],
                                self.b_mario_images[5]]
@@ -104,8 +106,10 @@ class Mario(pg.sprite.Sprite):
         else:
             self.jumping = True
 
-    def change_size(self):
-        if self.size == 's':
-            self.size = 'b'
-        else:
-            self.size = 's'
+    def change_size(self, str):
+        self.size = str
+
+    def reset(self):
+        self.image = pg.transform.rotozoom(self.settings.get_sheet_image(
+            self.settings.sprite_sheet, self.settings.mario_rect), 0, 2)
+        self.rect = self.image.get_rect(topleft=self.original_pos)

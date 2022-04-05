@@ -1,4 +1,5 @@
 from block import Block
+from background import Background
 from goomba import Goomba
 from mario import Mario
 from flag import Flag
@@ -22,13 +23,25 @@ class Level:
         self.settings = game.settings
         self.screen = game.screen
         self.mario = Mario(game=self.game, pos=(0, 32 * 15))
-        self.bg = game.bg
+        self.level = level
+
         self.blocks = None
         self.mobs = None
         self.flag = None
-        self.setup_level(level)
+        self.setup_level(self.level)
+
+    def reset(self):
+        for block in self.blocks:
+            block.kill()
+
+        for mob in self.mobs:
+            mob.kill()
+
+        self.mario.reset()
+        self.bg.reset()
 
     def setup_level(self, layout):
+        self.bg = Background(game=self.game)
         self.blocks = pg.sprite.Group()
         self.mobs = pg.sprite.Group()
         for row_index, row in enumerate(layout):
@@ -37,7 +50,8 @@ class Level:
                 y = row_index * self.settings.tile_size
                 if cell in Level.block_dic:
                     # print(f'{row_index}, {col_index}: {cell}')
-                    block = Block((x, y), Level.block_dic[cell], block_type=cell)
+                    block = Block(
+                        (x, y), Level.block_dic[cell])
                     self.blocks.add(block)
                 elif cell in Level.mob_dic:
                     mob = Level.mob_dic[cell](game=self.game, pos=(x, y))
@@ -66,9 +80,11 @@ class Level:
             self.mario.update()
             self.settings.goomba_speed_factor = 4
 
-        self.game.stats.highscore = max(self.game.stats.score, self.game.stats.highscore)
+        self.game.stats.highscore = max(
+            self.game.stats.score, self.game.stats.highscore)
 
     def draw(self):
+        self.bg.draw()
         self.mario.draw()
         self.blocks.draw(self.screen)
         for mob in self.mobs:
@@ -79,9 +95,6 @@ class Level:
     def horizontal_collision(self):
         for blocks in self.blocks.sprites():
             if blocks.rect.colliderect(self.mario.rect):
-                if blocks.type == 'M':
-                    blocks.kill()
-                    self.mario.change_size()
                 if self.mario.vector.x < 0:
                     self.mario.rect.left = blocks.rect.right
                 elif self.mario.vector.x > 0:
@@ -97,6 +110,13 @@ class Level:
                             mob.rect.right = blocks.rect.left
                         mob.turn()
 
+        for mob in self.mobs.sprites():
+            if not mob.dying:
+                if mob.rect.colliderect(self.mario.rect):
+                    self.game.stats.mario_hit()
+                    self.reset()
+                    self.setup_level(self.level)
+
         if self.flag.rect.colliderect(self.mario.rect):
             self.game.finished = True
 
@@ -110,8 +130,6 @@ class Level:
             if block.rect.colliderect(self.mario.rect):
                 if self.mario.vector.y < 0:
                     self.mario.rect.top = block.rect.bottom
-                    if block.type == 'B':
-                        block.kill()
                 elif self.mario.vector.y > 0:
                     self.mario.vector.y = 0
                     self.mario.rect.bottom = block.rect.top
@@ -134,8 +152,6 @@ class Level:
                         self.mario.jump()
                         self.game.stats.goomba_hit(mob)
                         mob.switch_timer()
-                    else:
-                        self.game.stats.mario_hit()
 
     def apply_gravity(self, sprite):
         sprite.vector.y += self.settings.gravity

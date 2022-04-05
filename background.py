@@ -17,3 +17,6 @@ class Background:
         self.rect.x += self.settings.mario_speed_factor / 2
         self.bg = pg.transform.rotozoom(self.settings.get_sheet_image(
             pg.image.load('images/level_bg.png').convert_alpha(), self.rect), 0, 2.3)
+
+    def reset(self):
+        self.rect.x = 0

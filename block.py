@@ -7,11 +7,10 @@ def get_image(url):
 
 
 class Block(pg.sprite.Sprite):
-    def __init__(self, pos, url, block_type):
+    def __init__(self, pos, url):
         super().__init__()
         self.image = get_image(url)
         self.rect = self.image.get_rect(topleft=pos)
-        self.type = block_type
         self.on_screen = False
 
     def update(self, shift=0):
